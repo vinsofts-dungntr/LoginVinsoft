@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#ffffff">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_marginLeft="@dimen/marginLeft_edt"
+                    android:layout_marginRight="@dimen/marginRight_edt"
+                    android:id="@+id/edUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:textSize="@dimen/text_size"
+                    android:inputType="textEmailAddress"
+                    android:background="@drawable/edittext_custom"/>
+                <ImageView
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_account_circle_black_24dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignTop="@id/edUsername"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/marginLeft_edt"
+                    android:layout_marginRight="@dimen/marginRight_edt"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/edittext_custom"
+                    android:inputType="textPassword"
+                    android:textSize="@dimen/text_size" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/edPassword"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/ic_lock_outline_black_24dp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <Button
+                android:id="@+id/btLogin"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="@dimen/btn_width"
+                android:layout_height="@dimen/btn_heighht"
+                android:background="@drawable/custom_buttom"
+                android:text="@string/text_btn_login"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_button_size"
+                android:textColor="@color/color_text" />
+            <Button
+                android:layout_marginTop="1dp"
+                android:id="@+id/btSighUp"
+                android:layout_width="@dimen/btn_width"
+                android:layout_height="@dimen/btn_heighht"
+                android:background="@drawable/custom_button_sighin"
+                android:text="@string/text_btn_sigh"
+                android:textSize="@dimen/text_button_size"
+                android:textAllCaps="false"
+                android:textColor="@color/background" />
+            <TextView
+                android:id="@+id/tv_fogot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_forgotpass"
+                android:layout_marginTop="15dp"
+                android:textSize="@dimen/tv_size"
+                android:textColor="@color/background" />
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/tv_login"
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_login_by"
+                android:textSize="@dimen/tv_size"
+                android:textColor="@color/background" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ln"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingTop="30dp">
+            <ImageView
+                android:layout_weight="1"
+                android:layout_width="@dimen/image_width"
+                android:layout_height="@dimen/image_height"
+                android:src="@drawable/face" />
+            <ImageView
+                android:layout_weight="1"
+                android:layout_width="@dimen/image_width"
+                android:layout_height="@dimen/image_height"
+                android:src="@drawable/google" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

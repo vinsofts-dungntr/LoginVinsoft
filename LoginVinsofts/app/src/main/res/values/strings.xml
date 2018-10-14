@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">LoginVinsofts</string>
+    <string name="text_btn_login">Đăng nhập</string>
+    <string name="text_btn_sigh">Đăng ký</string>
+    <string name="tv_forgotpass">Quên mật khẩu</string>
+    <string name="tv_login_by">Đăng nhập bằng</string>
+
+    <string name="tv_properties_basic">Thông tin cơ bản</string>
+    <string name="tv_properties_owner">Thông riêng tư</string>
+    <string name="hint_name">Họ tên</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_passworld">Mật khẩu</string>
+    <string name="hint_phone">Số điện thoại</string>
+    <string name="btn_sightin">Đăng ký</string>
+    <string name="tv_have_acout">Tôi đã có tài khoản</string>
+
+    <string name="title">Mời nhập đầy đủ thông tin</string>
+    <string name="login_success">Đăng nhập thành công</string>
+    <string name="sightup_succes">Đăng ký thành công</string>
+
+    <string name="error">Error:</string>
+    <string name="success">Success:</string>
+</resources>

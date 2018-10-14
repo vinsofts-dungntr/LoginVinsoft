@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/custom_button_home_sigh"
+        android:state_pressed="false">
+    </item>
+
+    <item android:drawable="@drawable/custom_buttom_pressed"
+        android:state_pressed="true">
+    </item>
+</selector>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size">22sp</dimen>
+    <dimen name="text_button_size">18sp</dimen>
+    <dimen name="image_width">80dp</dimen>
+    <dimen name="image_height">80dp</dimen>
+
+    <dimen name="btn_width">300dp</dimen>
+    <dimen name="btn_heighht">45dp</dimen>
+
+    <dimen name="tv_size">15sp</dimen>
+
+    <dimen name="marginLeft_edt">45dp</dimen>
+    <dimen name="marginRight_edt">25dp</dimen>
+</resources>
