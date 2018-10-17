@@ -1,4 +1,4 @@
-package com.login.tridung.loginvinsofts;
+package com.login.tridung.loginvinsofts.utils;
 
 import android.content.Context;
 import android.widget.Toast;

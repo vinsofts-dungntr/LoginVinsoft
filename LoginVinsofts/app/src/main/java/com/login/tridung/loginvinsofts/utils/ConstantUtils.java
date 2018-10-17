@@ -1,4 +1,4 @@
-package com.login.tridung.loginvinsofts;
+package com.login.tridung.loginvinsofts.utils;
 
 public class ConstantUtils {
     public static final String USERNAME="username";

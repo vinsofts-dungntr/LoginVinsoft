@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.login.tridung.loginvinsofts.utils.ConstantUtils;
+import com.login.tridung.loginvinsofts.utils.DialogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,11 +76,12 @@ public class MainActivity extends AppCompatActivity {
     public void login(){
         String user = edUsername.getText().toString().trim();
         String pass = edPassword.getText().toString().trim();
-        if (user.equals("") || pass.equals("")) {
-            DialogUtils.showDialog(this,getString(R.string.error),getString(R.string.title));
-        } else {
-            DialogUtils.showDialog(this,getString(R.string.success),getString(R.string.login_success));
+        if (user.equalsIgnoreCase("vinsofts") || pass.equalsIgnoreCase("vinsofts123")) {
             sharePreferent();
+            Intent intent=new Intent(this,SuccessActivity.class);
+            startActivity(intent);
+        } else {
+            DialogUtils.showDialog(this,getString(R.string.error),getString(R.string.error_accout));
         }
     }
 

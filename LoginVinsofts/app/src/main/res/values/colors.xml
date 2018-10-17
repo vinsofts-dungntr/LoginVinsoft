@@ -8,4 +8,5 @@
     <color name="color_text">#ffffff</color>
 
     <color name="color_edt">#F4E229</color>
+    <color name="backSuccess">#EEBBC5</color>
 </resources>

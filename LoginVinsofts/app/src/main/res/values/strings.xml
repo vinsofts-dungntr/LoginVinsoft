@@ -17,7 +17,11 @@
     <string name="title">Mời nhập đầy đủ thông tin</string>
     <string name="login_success">Đăng nhập thành công</string>
     <string name="sightup_succes">Đăng ký thành công</string>
+    <string name="error_accout">Tài khoản hoặc mật khẩu không đúng</string>
 
     <string name="error">Error:</string>
     <string name="success">Success:</string>
+
+    <string name="showlist">2.List</string>
+    <string name="name_country">Danh sách các quốc gia</string>
 </resources>

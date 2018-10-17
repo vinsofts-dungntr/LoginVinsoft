@@ -7,7 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.login.tridung.loginvinsofts.utils.ConstantUtils;
+import com.login.tridung.loginvinsofts.utils.DialogUtils;
+import com.login.tridung.loginvinsofts.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

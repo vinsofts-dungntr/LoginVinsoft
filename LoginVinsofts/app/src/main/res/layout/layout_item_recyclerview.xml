@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/lnItem"
+    android:layout_margin="2dp">
+
+    <ImageView
+        android:id="@+id/imIcon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/afghanistan"
+        android:layout_margin="10dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvNameTrans"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Áp-ga-nít-xtan"
+            android:textColor="@color/background"
+            android:textSize="18sp"
+            android:layout_margin="10dp"
+            android:layout_below="@id/tvNameEn"/>
+
+        <TextView
+            android:id="@+id/tvNameEn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Afghanistan"
+            android:textSize="18sp"
+            android:layout_margin="10dp"
+            android:textColor="@color/background" />
+    </RelativeLayout>
+
+</LinearLayout>

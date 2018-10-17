@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SuccessActivity"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/backSuccess">
+    <Button
+        android:id="@+id/btShowList"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:text="@string/showlist"
+        android:background="@drawable/custom_buttom"
+        android:textColor="@color/color_text"
+        android:textAllCaps="false"
+        android:textSize="@dimen/text_size"/>
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.login.tridung.loginvinsofts;
+package com.login.tridung.loginvinsofts.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
