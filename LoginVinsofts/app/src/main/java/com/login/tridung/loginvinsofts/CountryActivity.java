@@ -1,94 +1,86 @@
 package com.login.tridung.loginvinsofts;
 
-import android.app.ActionBar;
-import android.app.AlertDialog;
+
+
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import com.login.tridung.loginvinsofts.adapter.CustomRecyclerViewAdapter;
-import com.login.tridung.loginvinsofts.model.AddItemModel;
 import com.login.tridung.loginvinsofts.model.CountryModel;
-import com.login.tridung.loginvinsofts.utils.DialogAddItem;
-import com.login.tridung.loginvinsofts.utils.DialogUtils;
-import com.login.tridung.loginvinsofts.utils.RecyclerItemClickListener;
+import com.login.tridung.loginvinsofts.utils.DialogShowIcon;
 import com.login.tridung.loginvinsofts.utils.ToastUtils;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CountryActivity extends AppCompatActivity {
+public class CountryActivity extends AppCompatActivity implements CustomRecyclerViewAdapter.OnClickItemRecylerView {
+    public static final int TIME_DELAYED = 2500;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.imAdd)
     ImageView imAdd;
+    @BindView(R.id.btSwitch)
+    Button btSwitch;
+    SwipeRefreshLayout refreshLayout;
     CustomRecyclerViewAdapter adapter;
-    List<CountryModel> mList;
+    List<CountryModel> mList=new ArrayList<>();
+    boolean switchView=true;
+    LinearLayoutManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_country);
-
         ButterKnife.bind(this);
+        initView();
+        onItemMove();
+        onListRefresh();
+        loadMoreData();
+    }
 
-        adapter = new CustomRecyclerViewAdapter(CountryActivity.this, (ArrayList<CountryModel>) getDataFake());
-
-        LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(manager);
+    public void initView(){
+        if(switchView){
+            manager = new LinearLayoutManager(getApplicationContext());
+            manager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(manager);
+        }else {
+            GridLayoutManager manager=new GridLayoutManager(getApplicationContext(),2);
+            manager.setSpanCount(2);
+            recyclerView.setLayoutManager(manager);
+            adapter.notifyDataSetChanged();
+        }
+        adapter = new CustomRecyclerViewAdapter(recyclerView,getDataFake(), CountryActivity.this);
         recyclerView.setAdapter(adapter);
+        adapter.setmOnClickItemRecylerView(this);
 
         DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.custom_divinder);
         divider.setDrawable(drawable);
         recyclerView.addItemDecoration(divider);
-
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(),
-                recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                ToastUtils.showToast(CountryActivity.this, "chọn" + position);
-            }
-
-            @Override
-            public void onLongItemClick(View view, int position) {
-                removeItem(position);
-                DialogUtils.showDialog(CountryActivity.this, "Thông báo", "Đã xóa");
-            }
-        }));
-
-        imAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogAdd();
-            }
-        });
-
     }
 
     private List<CountryModel> getDataFake() {
-        mList = new ArrayList<CountryModel>();
+
         mList.add(new CountryModel("Afghanistan", "Cộng hòa Hồi giáo Afghanistan",
                 R.drawable.afghanistan));
         mList.add(new CountryModel("Albania", "Cộng hòa Albania", R.drawable.albania));
@@ -108,26 +100,25 @@ public class CountryActivity extends AppCompatActivity {
     public void removeItem(int position) {
         mList.remove(position);
         adapter.notifyItemRemoved(position);
-        adapter.notifyItemRangeChanged(position, mList.size());
     }
 
-    public void showDialogAdd(){
-        final Dialog dialog=new Dialog(this,R.style.Theme_AppCompat_Light_Dialog_Alert);
+    public void showDialogAdd() {
+        final Dialog dialog = new Dialog(this, R.style.Theme_AppCompat_Light_Dialog_Alert);
         dialog.setContentView(R.layout.layout_dialog);
         dialog.setTitle("Điền thông tin");
-        Button btOK=dialog.findViewById(R.id.btChoseIm);
+        Button btOK = dialog.findViewById(R.id.btChoseIm);
         btOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                EditText edEn=dialog.findViewById(R.id.edNameEns);
-                EditText edTran=dialog.findViewById(R.id.edNameTrans);
-                String en=edEn.getText().toString();
-                String vn=edTran.getText().toString();
+                EditText edEn = dialog.findViewById(R.id.edNameEns);
+                EditText edTran = dialog.findViewById(R.id.edNameTrans);
+                String en = edEn.getText().toString();
+                String vn = edTran.getText().toString();
 
-                CountryModel model=new CountryModel(en,vn,R.drawable.vietnam);
+                CountryModel model = new CountryModel(en, vn, R.drawable.vietnam);
 
-                adapter.addItem(model,mList.size(),0);
+                adapter.addItem(model, mList.size(), 0);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -136,4 +127,116 @@ public class CountryActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public void onListRefresh() {
+        refreshLayout = findViewById(R.id.swapRV);
+        refreshLayout.setColorSchemeResources(R.color.background, R.color.backSuccess);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.setRefreshing(false);
+                        adapter.removeData(mList);
+                        getDataFake();
+                        adapter.notifyDataSetChanged();
+
+                    }
+                }, TIME_DELAYED);
+            }
+        });
+
+    }
+
+    public void onItemMove() {
+        ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder dragged,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                int position_draged = dragged.getAdapterPosition();
+                int position_target = target.getAdapterPosition();
+
+                Collections.swap(mList, position_draged, position_target);
+                adapter.notifyItemMoved(position_draged, position_target);
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                removeItem(viewHolder.getAdapterPosition());
+                ToastUtils.showToast(getApplicationContext(), "Đã xóa" );
+            }
+        });
+
+        helper.attachToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public void onItemClick(int pos) {
+        ToastUtils.showToast(CountryActivity.this, "Item Click");
+    }
+
+    @Override
+    public void onClickImage() {
+        ToastUtils.showToast(CountryActivity.this, "click image");
+
+    }
+
+    @Override
+    public void onClickNameEn(String nameEn) {
+        ToastUtils.showToast(CountryActivity.this, nameEn);
+    }
+
+    @Override
+    public void onClickNameTrans(String nameTrans) {
+        ToastUtils.showToast(CountryActivity.this, nameTrans);
+    }
+
+
+    public void loadMoreData(){
+        adapter.setLoadMore(new ILoadMore() {
+            @Override
+            public void onLoadMore() {
+                if (mList.size() <= 50) {
+                    mList.add(null);
+                    adapter.notifyItemInserted(mList.size()-1);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mList.remove(mList.size()-1);
+                            adapter.notifyItemRemoved(mList.size());
+                            int index=mList.size();
+                            int end=index+8;
+                            for(int i=index;i<=end;i++){
+                                mList.add(new CountryModel("Afghanistan", "Cộng hòa Hồi giáo Afghanistan",
+                                        R.drawable.afghanistan));
+                            }
+                            adapter.notifyDataSetChanged();
+                            adapter.setLoading();
+                        }
+                    },3000);
+                }else {
+                    ToastUtils.showToast(CountryActivity.this,"Load Data Completed");
+                }
+            }
+        });
+    }
+
+    @OnClick({R.id.btSwitch,R.id.imAdd})
+    public void onClickSwitch(View view){
+        switch (view.getId()){
+            case R.id.btSwitch:{
+                switchView=!switchView;
+                initView();
+                break;
+            }
+            case R.id.imAdd:{
+                showDialogAdd();
+                break;
+            }
+        }
+    }
 }
