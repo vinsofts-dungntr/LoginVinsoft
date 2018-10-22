@@ -1,6 +1,7 @@
 package com.login.tridung.loginvinsofts.adapter;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.login.tridung.loginvinsofts.ILoadMore;
+
 import com.login.tridung.loginvinsofts.R;
 import com.login.tridung.loginvinsofts.model.CountryModel;
 import com.login.tridung.loginvinsofts.utils.ConstantUtils;
@@ -28,31 +29,28 @@ public class CustomRecyclerViewAdapter extends
     private List<CountryModel> mList;
     ILoadMore loadMore;
     boolean isLoading;
-    int visiableThread=3;
-    int totalItemCount;
-    int visiableItem;
+    int visiableThread=6;
     Activity activity;
-    boolean isSwitch=true;
 
     public static OnClickItemRecylerView mOnClickItemRecylerView;
 
     public CustomRecyclerViewAdapter(RecyclerView recyclerView,List<CountryModel> mList, Activity activity) {
         this.mList = mList;
         this.activity=activity;
-            if(isSwitch){
+        loadMore= (ILoadMore) activity;
+            if(!ConstantUtils.isSwitch){
                 final LinearLayoutManager linearLayoutManager= (LinearLayoutManager) recyclerView.getLayoutManager();
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
-                        totalItemCount = linearLayoutManager.getItemCount();
-                        visiableItem = linearLayoutManager.findLastVisibleItemPosition();
+                        int totalItemCount = linearLayoutManager.getItemCount();
+                        int visiableItem = linearLayoutManager.findLastVisibleItemPosition();
                         if (!isLoading && totalItemCount <= (visiableItem + visiableThread)) {
                             if (loadMore != null) {
                                 loadMore.onLoadMore();
                                 isLoading = true;
                             }
-
                         }
                     }
                 });
@@ -62,14 +60,13 @@ public class CustomRecyclerViewAdapter extends
                     @Override
                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
-                        totalItemCount = gridLayoutManager.getItemCount();
-                        visiableItem = gridLayoutManager.findLastVisibleItemPosition();
+                        int totalItemCount = gridLayoutManager.getItemCount();
+                        int visiableItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
                         if (!isLoading && totalItemCount <= (visiableItem + visiableThread)) {
                             if (loadMore != null) {
                                 loadMore.onLoadMore();
                                 isLoading = true;
                             }
-
                         }
                     }
                 });
@@ -99,7 +96,8 @@ public class CustomRecyclerViewAdapter extends
         if(viewHolder instanceof RecyclerViewHolder){
             CountryModel model=mList.get(i);
             RecyclerViewHolder recyclerViewHolder= (RecyclerViewHolder) viewHolder;
-            recyclerViewHolder.bindData(model);
+            recyclerViewHolder.bindData(model,i);
+
         }else if(viewHolder instanceof LoadingHolder){
             LoadingHolder loadingHolder= (LoadingHolder) viewHolder;
             loadingHolder.proLoadMore.setIndeterminate(true);
@@ -176,10 +174,13 @@ public class CustomRecyclerViewAdapter extends
             linearLayout.setOnClickListener(this);
         }
 
-        public void bindData(CountryModel countryModel) {
+        public void bindData(CountryModel countryModel,int pos) {
             tvNameTrans.setText(countryModel.getNameTrans());
             tvNameEn.setText(countryModel.getNameEn());
             imIcon.setImageResource(countryModel.getImage());
+            if(pos%2==0){
+                linearLayout.setBackgroundResource(R.color.colorAccent);
+            }
         }
 
         @Override

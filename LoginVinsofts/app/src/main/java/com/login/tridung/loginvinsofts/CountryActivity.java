@@ -2,7 +2,9 @@ package com.login.tridung.loginvinsofts;
 
 
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -19,9 +21,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import com.login.tridung.loginvinsofts.adapter.CustomRecyclerViewAdapter;
+import com.login.tridung.loginvinsofts.adapter.ILoadMore;
 import com.login.tridung.loginvinsofts.model.CountryModel;
-import com.login.tridung.loginvinsofts.utils.DialogShowIcon;
+import com.login.tridung.loginvinsofts.utils.ConstantUtils;
 import com.login.tridung.loginvinsofts.utils.ToastUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +37,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CountryActivity extends AppCompatActivity implements CustomRecyclerViewAdapter.OnClickItemRecylerView {
+public class CountryActivity extends AppCompatActivity implements CustomRecyclerViewAdapter.OnClickItemRecylerView,
+        ILoadMore {
     public static final int TIME_DELAYED = 2500;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -43,7 +49,6 @@ public class CountryActivity extends AppCompatActivity implements CustomRecycler
     SwipeRefreshLayout refreshLayout;
     CustomRecyclerViewAdapter adapter;
     List<CountryModel> mList=new ArrayList<>();
-    boolean switchView=true;
     LinearLayoutManager manager;
 
     @Override
@@ -54,24 +59,21 @@ public class CountryActivity extends AppCompatActivity implements CustomRecycler
         initView();
         onItemMove();
         onListRefresh();
-        loadMoreData();
+
     }
 
     public void initView(){
-        if(switchView){
-            manager = new LinearLayoutManager(getApplicationContext());
-            manager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(manager);
-        }else {
-            GridLayoutManager manager=new GridLayoutManager(getApplicationContext(),2);
-            manager.setSpanCount(2);
-            recyclerView.setLayoutManager(manager);
-            adapter.notifyDataSetChanged();
+        if(!ConstantUtils.isSwitch){
+                manager = new LinearLayoutManager(getApplicationContext());
+                manager.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(manager);
+        }else if(ConstantUtils.isSwitch){
+                GridLayoutManager gridLayoutManager=new GridLayoutManager(getApplicationContext(),2);
+                recyclerView.setLayoutManager(gridLayoutManager);
         }
         adapter = new CustomRecyclerViewAdapter(recyclerView,getDataFake(), CountryActivity.this);
         recyclerView.setAdapter(adapter);
         adapter.setmOnClickItemRecylerView(this);
-
         DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.custom_divinder);
@@ -196,40 +198,11 @@ public class CountryActivity extends AppCompatActivity implements CustomRecycler
     }
 
 
-    public void loadMoreData(){
-        adapter.setLoadMore(new ILoadMore() {
-            @Override
-            public void onLoadMore() {
-                if (mList.size() <= 50) {
-                    mList.add(null);
-                    adapter.notifyItemInserted(mList.size()-1);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mList.remove(mList.size()-1);
-                            adapter.notifyItemRemoved(mList.size());
-                            int index=mList.size();
-                            int end=index+8;
-                            for(int i=index;i<=end;i++){
-                                mList.add(new CountryModel("Afghanistan", "Cộng hòa Hồi giáo Afghanistan",
-                                        R.drawable.afghanistan));
-                            }
-                            adapter.notifyDataSetChanged();
-                            adapter.setLoading();
-                        }
-                    },3000);
-                }else {
-                    ToastUtils.showToast(CountryActivity.this,"Load Data Completed");
-                }
-            }
-        });
-    }
-
     @OnClick({R.id.btSwitch,R.id.imAdd})
     public void onClickSwitch(View view){
         switch (view.getId()){
             case R.id.btSwitch:{
-                switchView=!switchView;
+                ConstantUtils.isSwitch=!ConstantUtils.isSwitch;
                 initView();
                 break;
             }
@@ -239,4 +212,33 @@ public class CountryActivity extends AppCompatActivity implements CustomRecycler
             }
         }
     }
+
+    @Override
+    public void onLoadMore() {
+        if (mList.size() <= 1000) {
+            if (mList.get(mList.size()-1)!=null){
+                mList.add(null);
+                adapter.notifyItemInserted(mList.size()-1);
+            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mList.remove(mList.size()-1);
+                    adapter.notifyItemRemoved(mList.size());
+                    int index=mList.size();
+                    int end=index+9;
+                    for(int i=index;i<=end;i++){
+                        mList.add(new CountryModel("Afghanistan", "Cộng hòa Hồi giáo Afghanistan",
+                                R.drawable.afghanistan));
+                    }
+                    adapter.notifyDataSetChanged();
+                    adapter.setLoading();
+                }
+            },3000);
+        }else {
+            ToastUtils.showToast(CountryActivity.this,"Load Data Completed");
+        }
+    }
+
+
 }

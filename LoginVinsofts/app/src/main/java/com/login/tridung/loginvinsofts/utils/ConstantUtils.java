@@ -9,4 +9,5 @@ public class ConstantUtils {
     public static final String PASSWORLD = "password";
     public static final int VIEW_TYPE_ITEM=7;
     public static final int VIEW_TYPE_LOADING=5;
+    public static boolean isSwitch=false;
 }
